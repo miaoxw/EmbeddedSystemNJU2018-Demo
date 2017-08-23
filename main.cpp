@@ -20,7 +20,6 @@ int main()
 	bool showSteps=true;
 
 	string window_name="Processed Image";
-	namedWindow(window_name);
 	VideoCapture capture(arg);
 
 	if (!capture.isOpened())
@@ -34,7 +33,6 @@ int main()
 	cout<<"Frame Size: "<<dWidth<<"x"<<dHeight<<endl;
 
 	Mat image;
-	image=imread(arg);
 	while(true)
 	{
 		capture>>image;
@@ -42,34 +40,19 @@ int main()
 			break;
 
 		//Set the ROI for the image
-		Rect roi((image.cols-image.rows)/2,0,image.rows,image.rows);
+		Rect roi(0,image.rows/3,image.cols,image.rows/3);
 		Mat imgROI=image(roi);
 
 		//Canny algorithm
 		Mat contours;
 		Canny(imgROI,contours,50,250);
+		imshow("Canny",contours);
 
-		 /*
-		  *Hough tranform for line detection with feedback
-		  *Increase by 25 for the next frame if we found some lines.
-		  *This is so we don't miss other lines that may crop up in the next frame
-		  *but at the same time we don't want to start the feed back loop from scratch.
-		  */
 		vector<Vec2f> lines;
-		if(houghVote<1||lines.size()>10)
-		//All lines lost. Reset
-			houghVote=200;
-		else
-			houghVote+=25;
-		
-		while(lines.size()<2&&houghVote>0)
-		{
-			HoughLines(contours,lines,1,PI/180,houghVote);
-			houghVote-=5;
-		}
-		clog<<"houghVote="<<houghVote<<endl;
+		HoughLines(contours,lines,1,PI/180,130);
 		Mat result(imgROI.size(),CV_8U,Scalar(255));
 		imgROI.copyTo(result);
+		clog<<lines.size()<<endl;
 
 		//Draw the lines
 		for(vector<Vec2f>::const_iterator it=lines.begin();it!=lines.end();++it)
@@ -94,7 +77,7 @@ int main()
 		stringstream overlayedText;
 		overlayedText<<"Lines Segments: "<<lines.size();
 
-		putText(result,overlayedText.str(),Point(10,image.rows-10),2,0.8,Scalar(0,0,255),0);
+		putText(result,overlayedText.str(),Point(10,image.rows/3-10),2,0.8,Scalar(0,0,255),0);
 		imshow(window_name,result);
 
 		lines.clear();
