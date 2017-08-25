@@ -34,12 +34,12 @@ int generateCommand(float minRad,float maxRad)
 	//Both edges are lost, stop the robot
 	if(minRad>PI&&maxRad<-PI)
 		return STOP;	
-	//Right edge is loat
+	//Left edge is loat
 	if(minRad>PI/2)
-		return RIGHT;	
-	//Left edge is lost
+		return LEFT;	
+	//Right edge is lost
 	if(maxRad<PI/2)
-		return LEFT;
+		return RIGHT;
 	
 	float leftEdgeAngle=fabs(minRad*180/PI);
 	float rightEdgeAngle=fabs(PI-maxRad*180/PI);
@@ -115,7 +115,7 @@ int main()
 				if(theta<minRad)
 					minRad=theta;
 				
-				#ifndef _DEBUG
+				#ifdef _DEBUG
 				//point of intersection of the line with first row
 				Point pt1(rho/cos(theta),0);
 				//point of intersection of the line with last row
