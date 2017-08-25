@@ -56,7 +56,7 @@ int generateCommand(float minRad,float maxRad)
 int main()
 {
 	//Initialize serialport to Arduino
-	system("sudo stty -F "+CAM_PATH+" speed 115200 cs8 -parenb -cstopb -echo".c_str());
+	system(("sudo stty -F "+CAM_PATH+" speed 115200 cs8 -parenb -cstopb -echo").c_str());
 	
 	VideoCapture capture(CAM_PATH);
 	//If this fails, try to open as a video camera, through the use of an integer param
