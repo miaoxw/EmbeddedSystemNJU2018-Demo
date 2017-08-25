@@ -112,9 +112,9 @@ int main()
 			if((theta>0.09&&theta<1.48)||(theta<-0.09&&theta>-1.48))
 			{
 				if(theta>maxRad)
-					maxSlope=theta;
+					maxRad=theta;
 				if(theta<minRad)
-					minSlope=theta;
+					minRad=theta;
 				
 				#ifndef _DEBUG
 				//point of intersection of the line with first row
