@@ -21,7 +21,7 @@ const string CANNY_WINDOW_NAME="Canny";
 
 const int CANNY_LOWER_BOUND=50;
 const int CANNY_UPPER_BOUND=250;
-const int HOUGH_THRESHOLD=160;
+const int HOUGH_THRESHOLD=150;
 
 const int FORWARD=0,STOP=1,LEFT=2,RIGHT=3;
 const char COMMANDS[][32]={"sudo echo -n \"F\">/dev/ttyUSB0",
@@ -71,7 +71,7 @@ int main()
 	clog<<"Frame Size: "<<dWidth<<"x"<<dHeight<<endl;
 	
 	//When all is ready, let the robot go forward
-	system("sudo echo -n \"F\">/dev/ttyUSB0");
+	system(COMMANDS[FORWARD]);
 
 	Mat image;
 	while(true)
