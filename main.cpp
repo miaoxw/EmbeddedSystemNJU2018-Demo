@@ -15,33 +15,34 @@ using namespace cv;
 using namespace std;
 
 const string CAM_PATH="/dev/video0";
+const string ARDUINO_PATH="/dev/ttyUSB0";
 const string MAIN_WINDOW_NAME="Processed Image";
 const string CANNY_WINDOW_NAME="Canny";
 
 const int CANNY_LOWER_BOUND=50;
-const int CANNY_UPPER_COUND=250;
-const int HOUGH_THRESHOLD=130;
+const int CANNY_UPPER_BOUND=250;
+const int HOUGH_THRESHOLD=160;
 
 const int FORWARD=0,STOP=1,LEFT=2,RIGHT=3;
-const char COMMANDS[][32]={	"sudo echo -n \"F\">/dev/ttyUSB0",
-							"sudo echo -n \"S\">/dev/ttyUSB0",
-							"sudo echo -n \"L\">/dev/ttyUSB0",
-							"sudo echo -n \"R\">/dev/ttyUSB0"};
+const char COMMANDS[][32]={"sudo echo -n \"F\">/dev/ttyUSB0",
+	"sudo echo -n \"S\">/dev/ttyUSB0",
+	"sudo echo -n \"L\">/dev/ttyUSB0",
+	"sudo echo -n \"R\">/dev/ttyUSB0"};
 
 int generateCommand(float minRad,float maxRad)
 {
 	//Both edges are lost, stop the robot
-	if(minRad>0&&maxRad<0)
+	if(minRad>PI&&maxRad<-PI)
 		return STOP;	
 	//Right edge is loat
-	if(minRad>0)
+	if(minRad>PI/2)
 		return RIGHT;	
 	//Left edge is lost
-	if(maxRad<0)
+	if(maxRad<PI/2)
 		return LEFT;
 	
 	float leftEdgeAngle=fabs(minRad*180/PI);
-	float rightEdgeAngle=fabs(maxRad*180/PI);
+	float rightEdgeAngle=fabs(PI-maxRad*180/PI);
 	if(fabs(leftEdgeAngle-rightEdgeAngle)>15)
 	{
 		if(leftEdgeAngle>rightEdgeAngle)
@@ -56,7 +57,7 @@ int generateCommand(float minRad,float maxRad)
 int main()
 {
 	//Initialize serialport to Arduino
-	system(("sudo stty -F "+CAM_PATH+" speed 115200 cs8 -parenb -cstopb -echo").c_str());
+	system(("sudo stty -F "+ARDUINO_PATH+" speed 115200 cs8 -parenb -cstopb -echo").c_str());
 	
 	VideoCapture capture(CAM_PATH);
 	//If this fails, try to open as a video camera, through the use of an integer param
@@ -85,7 +86,7 @@ int main()
 
 		//Canny algorithm
 		Mat contours;
-		Canny(imgROI,contours,CANNY_LOWER_BOUND,CANNY_UPPER_COUND);
+		Canny(imgROI,contours,CANNY_LOWER_BOUND,CANNY_UPPER_BOUND);
 		#ifdef _DEBUG
 		imshow(CANNY_WINDOW_NAME,contours);
 		#endif
@@ -97,19 +98,17 @@ int main()
 		clog<<lines.size()<<endl;
 
 		
-		float maxRad=-PI/2;
-		float minRad=PI/2;
+		float maxRad=-2*PI;
+		float minRad=2*PI;
 		//Draw the lines and judge the slope
 		for(vector<Vec2f>::const_iterator it=lines.begin();it!=lines.end();++it)
 		{
 			float rho=(*it)[0];			//First element is distance rho
 			float theta=(*it)[1];		//Second element is angle theta
-			if(theta>PI/2)
-				theta-=PI;
 
 			//Filter to remove vertical and horizontal lines,
 			//and atan(0.09) equals about 5 degrees.
-			if((theta>0.09&&theta<1.48)||(theta<-0.09&&theta>-1.48))
+			if((theta>0.09&&theta<1.48)||(theta>1.62&&theta<3.05))
 			{
 				if(theta>maxRad)
 					maxRad=theta;
@@ -126,7 +125,7 @@ int main()
 				#endif
 			}
 
-			clog<<"Line: ("<<rho<<","<<theta<<")\n";
+			//clog<<"Line: ("<<rho<<","<<theta<<")\n";
 		}
 		
 		int nextOperation=generateCommand(minRad,maxRad);
