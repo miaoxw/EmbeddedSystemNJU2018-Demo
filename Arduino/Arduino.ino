@@ -8,6 +8,7 @@ using PostureControl::turnRightALittle;
 
 void setup()
 {
+	MotorDriver::init();
 	Serial.begin(115200);
 }
 
