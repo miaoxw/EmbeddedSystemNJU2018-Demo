@@ -43,7 +43,7 @@ int generateCommand(float minRad,float maxRad)
 	
 	float leftEdgeAngle=fabs(minRad*180/PI);
 	float rightEdgeAngle=fabs(PI-maxRad*180/PI);
-	if(fabs(leftEdgeAngle-rightEdgeAngle)>15)
+	if(fabs(leftEdgeAngle-rightEdgeAngle)>5)
 	{
 		if(leftEdgeAngle>rightEdgeAngle)
 			return RIGHT;
@@ -69,9 +69,6 @@ int main()
 	double dWidth=capture.get(CV_CAP_PROP_FRAME_WIDTH);			//the width of frames of the video
 	double dHeight=capture.get(CV_CAP_PROP_FRAME_HEIGHT);		//the height of frames of the video
 	clog<<"Frame Size: "<<dWidth<<"x"<<dHeight<<endl;
-	
-	//When all is ready, let the robot go forward
-	system(COMMANDS[FORWARD]);
 
 	Mat image;
 	while(true)
@@ -125,7 +122,9 @@ int main()
 				#endif
 			}
 
-			//clog<<"Line: ("<<rho<<","<<theta<<")\n";
+			#ifdef _DEBUG
+			clog<<"Line: ("<<rho<<","<<theta<<")\n";
+			#endif
 		}
 		
 		int nextOperation=generateCommand(minRad,maxRad);
