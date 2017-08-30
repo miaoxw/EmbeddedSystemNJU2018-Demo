@@ -9,7 +9,7 @@
 #define PI 3.1415926
 
 //Uncomment this line at run-time to skip GUI rendering
-#define _DEBUG
+//#define _DEBUG
 
 using namespace cv;
 using namespace std;
@@ -43,7 +43,7 @@ int generateCommand(float minRad,float maxRad)
 	
 	float leftEdgeAngle=fabs(minRad*180/PI);
 	float rightEdgeAngle=fabs(PI-maxRad*180/PI);
-	if(fabs(leftEdgeAngle-rightEdgeAngle)>5)
+	if(fabs(leftEdgeAngle-rightEdgeAngle)>10)
 	{
 		if(leftEdgeAngle>rightEdgeAngle)
 			return RIGHT;

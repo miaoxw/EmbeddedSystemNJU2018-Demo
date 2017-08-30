@@ -11,7 +11,6 @@ void PostureControl::turnLeftALittle()
 	forward(MOTOR_LEFT_BACK);
 	forward(MOTOR_RIGHT_FRONT,180);
 	forward(MOTOR_RIGHT_BACK,180);
-	delay(30);
 }
 
 void PostureControl::turnRightALittle()
@@ -20,5 +19,4 @@ void PostureControl::turnRightALittle()
 	forward(MOTOR_LEFT_BACK,180);
 	forward(MOTOR_RIGHT_FRONT);
 	forward(MOTOR_RIGHT_BACK);
-	delay(30);
 }
