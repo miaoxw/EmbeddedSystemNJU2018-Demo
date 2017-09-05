@@ -1,6 +1,6 @@
 # Lane Detection-Demo
 ## Introduction
-This is a demo for software design of the coursework to be assigned **on Introduction to Embedded Systems** in the first semester of Year 2017-2018, Software Institute, Nanjing University.
+This is a demo for software design of the coursework to be assigned on **Introduction to Embedded Systems** in the first semester of Year 2017-2018, *Software Institute, Nanjing University*.
 This demo just simply implement the function of a four-wheeled robot walking forward within the range of two black lanes. It just works, and neither performance nor accuracy is the best.
 
 ## Dependencies
