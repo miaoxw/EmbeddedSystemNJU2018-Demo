@@ -1,3 +1,6 @@
+#include <wiringPi.h>
+#include <softPwm.h>
+
 #include "GPIOlib.h"
 
 const int IN1=22;

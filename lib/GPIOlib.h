@@ -1,6 +1,3 @@
-#include <wiringPi.h>
-#include <softPwm.h>
-
 #ifndef GPIOLIB_H
 #define GPIOLIB_H
 
