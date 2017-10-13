@@ -185,5 +185,5 @@ int GPIO::turnTo(int angle)
 
 void GPIO::delay(int milliseconds)
 {
-	delay(milliseconds);
+	::delay(milliseconds);
 }
