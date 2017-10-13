@@ -1,6 +1,3 @@
-#include <wiringPi.h>
-#include <softPwm.h>
-
 #ifndef GPIOLIB_H
 #define GPIOLIB_H
 
@@ -19,5 +16,7 @@ namespace GPIO
 	int resetCounter();
 	void getCounter(int *countLeft,int *countRight);
 	int turnTo(int angle);
+	
+	void delay(int milliseconds);
 }
 #endif
