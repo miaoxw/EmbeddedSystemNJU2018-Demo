@@ -107,7 +107,7 @@ int GPIO::controlRight(int direction,int speed)
 		softPwmWrite(ENB,speed);
 		return 0;
 	}
-	else if(firection==BACKWARD)
+	else if(direction==BACKWARD)
 	{
 		digitalWrite(IN3,LOW);
 		digitalWrite(IN4,HIGH);
@@ -153,12 +153,14 @@ int GPIO::resetCounter()
 void GPIO::getCounter(int *countLeft,int *countRight)
 {
 	if(!initialized)
-		return -1;
+	{
+		*countLeft=*countRight=-1;
+		return;
+	}
 	
 	*countLeft=innerCountLeft;
 	*countRight=innerCountRight;
 	innerCountLeft=innerCountRight=0;
-	return 0;
 }
 
 inline long map(long x,long in_min,long in_max,long out_min,long out_max)
