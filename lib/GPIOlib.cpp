@@ -182,3 +182,8 @@ int GPIO::turnTo(int angle)
 	pwmWrite(SERVO_CONTROL,pwmValue);
 	return 0;
 }
+
+void GPIO::delay(int milliseconds)
+{
+	delay(milliseconds);
+}
