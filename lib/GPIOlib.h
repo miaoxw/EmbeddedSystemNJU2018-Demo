@@ -15,6 +15,7 @@ namespace GPIO
 	
 	int resetCounter();
 	void getCounter(int *countLeft,int *countRight);
+	
 	int turnTo(int angle);
 	
 	void delay(int milliseconds);
