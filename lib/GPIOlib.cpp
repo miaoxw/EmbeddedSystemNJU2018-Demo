@@ -15,7 +15,7 @@ const int RIGHT_ISR=3;
 
 const int SERVO_CONTROL=1;
 
-const int SPEED_LIMIT=50;
+const int SPEED_LIMIT=80;
 const int ANGLE_UPPER_BOUND=45;
 const int ANGLE_LOWER_BOUND=-45;
 
