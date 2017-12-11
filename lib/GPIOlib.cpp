@@ -1,7 +1,10 @@
+#include <cstdlib>
 #include <wiringPi.h>
 #include <softPwm.h>
 
 #include "GPIOlib.h"
+
+using std::atexit;
 
 const int IN1=22;
 const int IN2=23;
@@ -33,9 +36,33 @@ void rightISR()
 	++innerCountRight;
 }
 
+void destroy()
+{
+	wiringPiSetup();
+	softPwmCreate(ENA,0,100);
+	softPwmCreate(ENB,0,100);
+	pinMode(IN1,OUTPUT);
+	pinMode(IN2,OUTPUT);
+	pinMode(IN3,OUTPUT);
+	pinMode(IN4,OUTPUT);
+	
+	pinMode(LEFT_ISR,INPUT);
+	pinMode(RIGHT_ISR,INPUT);
+	
+	pinMode(SERVO_CONTROL,PWM_OUTPUT);
+	pwmSetMode(PWM_MODE_MS);
+	pwmSetClock(400);
+	pwmSetRange(1024);
+	
+	initialized=false;
+}
 
 int GPIO::init()
 {
+	//Register this function to avoid crazy running
+	if(!initialized)
+		atexit(destroy);
+	
 	wiringPiSetup();
 	softPwmCreate(ENA,0,100);
 	softPwmCreate(ENB,0,100);
